@@ -42,14 +42,17 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined library search paths
 )
 
-# Add sources to executable
+# Auto-discover user source files under User/Src/
+file(GLOB_RECURSE USER_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/User/Src/*.c"
+)
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user sources here
+    ${USER_SOURCES}
 )
 
-# Add include paths
+# Add user include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user defined include paths
+    "User/Inc"
 )
 
 # Add project symbols (macros)
