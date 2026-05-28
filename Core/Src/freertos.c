@@ -25,6 +25,7 @@
 #include "usart.h"
 #include "string.h"
 #include "gpio.h"
+#include <stdio.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -147,12 +148,15 @@ void StartLEDTask(void *argument)
 void StartSerialTask(void *argument)
 {
   /* USER CODE BEGIN StartSerialTask */
-  char msg[] = "Hello from SerialTask!\r\n";
+  // char msg[] = "Hello from SerialTask!\r\n";
+  uint32_t Time_count = 0;
 
   /* Infinite loop */
   for(;;)
   {
-    HAL_UART_Transmit(&huart1, (uint8_t*)msg, sizeof(msg)-1, HAL_MAX_DELAY);
+    // HAL_UART_Transmit(&huart1, (uint8_t*)msg, sizeof(msg)-1, HAL_MAX_DELAY);
+    Time_count = HAL_GetTick();
+    printf("Time: %d\r\n", Time_count);
     osDelay(200);
   }
   /* USER CODE END StartSerialTask */
@@ -162,4 +166,3 @@ void StartSerialTask(void *argument)
 /* USER CODE BEGIN Application */
 
 /* USER CODE END Application */
-
