@@ -25,7 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -133,11 +133,30 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_StartButterTask */
 void StartButterTask(void *argument)
 {
+  uint16_t But_count = 0;
+  
   /* USER CODE BEGIN StartButterTask */
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    if(HAL_GPIO_ReadPin(Butter_GPIO_Port, Butter_Pin) == GPIO_PIN_RESET)
+    {
+      osDelay(20);
+      if(HAL_GPIO_ReadPin(Butter_GPIO_Port, Butter_Pin) == GPIO_PIN_RESET)
+      {
+        But_count++; But_count++;
+        osMessageQueuePut(ButQueueHandle, &But_count, 0, osWaitForever);
+        printf("But_count: %d\r\n",But_count);
+      }
+      while(HAL_GPIO_ReadPin(Butter_GPIO_Port, Butter_Pin) == GPIO_PIN_RESET)
+      {
+        osDelay(10);
+      }
+    }
+    else
+    {
+      osDelay(10);
+    }
   }
   /* USER CODE END StartButterTask */
 }
@@ -152,10 +171,14 @@ void StartButterTask(void *argument)
 void StartData_Task(void *argument)
 {
   /* USER CODE BEGIN StartData_Task */
+  uint16_t Data_count = 0;
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osMessageQueueGet(ButQueueHandle,&Data_count,0,osWaitForever);
+    Data_count++;
+    osDelay(1000);
+    printf("Data_count: %d\r\n",Data_count);
   }
   /* USER CODE END StartData_Task */
 }
@@ -164,4 +187,3 @@ void StartData_Task(void *argument)
 /* USER CODE BEGIN Application */
 
 /* USER CODE END Application */
-
