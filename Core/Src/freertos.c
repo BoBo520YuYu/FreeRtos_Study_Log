@@ -22,6 +22,9 @@
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
+#include "usart.h"
+#include "string.h"
+#include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
