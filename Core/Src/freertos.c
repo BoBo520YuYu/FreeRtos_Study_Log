@@ -141,16 +141,15 @@ void StartButterTask(void *argument)
   {
     if(HAL_GPIO_ReadPin(Butter_GPIO_Port, Butter_Pin) == GPIO_PIN_RESET)
     {
-      osDelay(20);
+      osDelay(20);  // 延时20ms，等待按钮稳定
       if(HAL_GPIO_ReadPin(Butter_GPIO_Port, Butter_Pin) == GPIO_PIN_RESET)
       {
-        But_count++; But_count++;
+        But_count++; 
         osMessageQueuePut(ButQueueHandle, &But_count, 0, osWaitForever);
-        printf("But_count: %d\r\n",But_count);
       }
       while(HAL_GPIO_ReadPin(Butter_GPIO_Port, Butter_Pin) == GPIO_PIN_RESET)
       {
-        osDelay(10);
+        osDelay(10);   //等待按钮释放
       }
     }
     else
@@ -172,13 +171,14 @@ void StartData_Task(void *argument)
 {
   /* USER CODE BEGIN StartData_Task */
   uint16_t Data_count = 0;
+  uint16_t butter_count = 0;
   /* Infinite loop */
   for(;;)
   {
-    osMessageQueueGet(ButQueueHandle,&Data_count,0,osWaitForever);
+    osMessageQueueGet(ButQueueHandle,&butter_count,0,osWaitForever);
     Data_count++;
     osDelay(1000);
-    printf("Data_count: %d\r\n",Data_count);
+    printf("butter_count: %d, Data_count: %d\r\n",butter_count,Data_count);
   }
   /* USER CODE END StartData_Task */
 }
